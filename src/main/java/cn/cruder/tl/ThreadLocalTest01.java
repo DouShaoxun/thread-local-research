@@ -31,12 +31,11 @@ public class ThreadLocalTest01 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                     String beforeValue = dateFormat.format(new Date());
                     THREAD_LOCAL.set(beforeValue);
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(100);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-
+                    Thread.yield();
+                    Thread.yield();
+                    Thread.yield();
+                    Thread.yield();
+                    Thread.yield();
                     String afterValue = THREAD_LOCAL.get();
                     // 使用完及时调用remove,避免内存泄漏
                     THREAD_LOCAL.remove();
@@ -44,11 +43,11 @@ public class ThreadLocalTest01 {
                     if (!equals) {
                         synchronized (ThreadLocalTest01.class) {
                             errorInt.getAndIncrement();
-                            String format = String.format("thread:%s - beforeValue: %s - afterValue: %s - beforeValue.equals(afterValue): %s", Thread.currentThread().getName(), beforeValue, afterValue, equals);
-                            System.out.println(format);
+
                         }
                     }
-
+                    String format = String.format("thread:%s - beforeValue: %s - afterValue: %s - beforeValue.equals(afterValue): %s", Thread.currentThread().getName(), beforeValue, afterValue, equals);
+                    System.out.println(format);
                     countDownLatch.countDown();
                 }
             }, "ThreadLocalTest-" + String.format("%04d", i));
