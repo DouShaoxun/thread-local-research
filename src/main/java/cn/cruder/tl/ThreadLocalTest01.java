@@ -38,6 +38,8 @@ public class ThreadLocalTest01 {
                     }
 
                     String afterValue = THREAD_LOCAL.get();
+                    // 使用完及时调用remove,避免内存泄漏
+                    THREAD_LOCAL.remove();
                     boolean equals = beforeValue.equals(afterValue);
                     if (!equals) {
                         synchronized (ThreadLocalTest01.class) {
