@@ -19,8 +19,8 @@ public class ThreadLocalTest01 {
     private static ThreadLocal<String> THREAD_LOCAL = new ThreadLocal<>();
 
     public static void main(String[] args) throws InterruptedException {
-
-        int threadNum = 5000;
+        long start = System.currentTimeMillis();
+        int threadNum = 100000;
         AtomicInteger errorInt = new AtomicInteger(0);
         CountDownLatch countDownLatch = new CountDownLatch(threadNum);
         List<Thread> threadList = new ArrayList<>();
@@ -32,19 +32,21 @@ public class ThreadLocalTest01 {
                     String beforeValue = dateFormat.format(new Date());
                     THREAD_LOCAL.set(beforeValue);
                     try {
-                        TimeUnit.MICROSECONDS.sleep(10);
+                        TimeUnit.MICROSECONDS.sleep(100);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+
                     String afterValue = THREAD_LOCAL.get();
                     boolean equals = beforeValue.equals(afterValue);
                     if (!equals) {
                         synchronized (ThreadLocalTest01.class) {
                             errorInt.getAndIncrement();
+                            String format = String.format("thread:%s - beforeValue: %s - afterValue: %s - beforeValue.equals(afterValue): %s", Thread.currentThread().getName(), beforeValue, afterValue, equals);
+                            System.out.println(format);
                         }
                     }
-                    String format = String.format("beforeValue: %s - afterValue: %s - beforeValue.equals(afterValue): %s", beforeValue, afterValue, equals);
-                    System.out.println(format);
+
                     countDownLatch.countDown();
                 }
             }, "ThreadLocalTest-" + String.format("%04d", i));
@@ -55,7 +57,7 @@ public class ThreadLocalTest01 {
             thread.start();
         }
         countDownLatch.await();
-        String format = String.format("errorInt: %s ", errorInt.get());
+        String format = String.format("errorInt: %s ,time:%s", errorInt.get(), System.currentTimeMillis() - start);
         System.out.println(format);
     }
 }
