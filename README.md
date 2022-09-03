@@ -1,5 +1,6 @@
 # `ThreadLocal`研究
-
+- [GitHub](https://github.com/DouShaoxun/thread-local-research)
+- [Gitee](https://gitee.com/DouShaoxun/thread-local-research)
 ## 1. `ThreadLocal`是什么？
 
 > `ThreadLocal` 叫做本地线程变量，意思是说，`ThreadLocal` 中填充的的是当前线程的变量，该变量对其他线程而言是封闭且隔离的，`ThreadLocal` 为变量在每个线程中创建了一个副本，这样每个线程都可以访问自己内部的副本变量
