@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -14,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2022-05-29 13:01
  */
 
-public class ThreadLocalTest01 {
+public class ThreadLocalTest {
 
     private static ThreadLocal<String> THREAD_LOCAL = new ThreadLocal<>();
 
@@ -41,7 +40,7 @@ public class ThreadLocalTest01 {
                     THREAD_LOCAL.remove();
                     boolean equals = beforeValue.equals(afterValue);
                     if (!equals) {
-                        synchronized (ThreadLocalTest01.class) {
+                        synchronized (ThreadLocalTest.class) {
                             errorInt.getAndIncrement();
 
                         }
